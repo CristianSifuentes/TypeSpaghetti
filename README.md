@@ -111,6 +111,43 @@
    type PartialUser = Partial<{ id: number; name: string }>
    ```
 6. **Namespace and Module Resolution** for Large-Scale Projects
+7. **Generic Constraints**: Restrict a type parameter to a subset of types with `extends`.
+   ```typescript
+   function func<T extends string | number>(value: T): T {
+       return value;
+   }
+   func("Hello"); // OK, T = string
+   func(42);      // OK, T = number
+   // func(true); // Error: boolean is not assignable to string | number
+   ```
+8. **Generic Interfaces**: Define reusable contracts parameterized over multiple types.
+   ```typescript
+   interface Repository<T, U> {
+       items: T[];
+       add(item: T): void;
+       getById(id: U): T | undefined;
+   }
+   ```
+9. **Generic Classes**: Bind every member of a class to a type parameter for structural consistency.
+   ```typescript
+   class UserDetails<T extends User> {
+       id: T['id'];
+       name: T['name'];
+       constructor(user: T) {
+           this.id = user.id;
+           this.name = user.name;
+       }
+   }
+   ```
+10. **Constraining Parameters to Prior Arguments** with `keyof`:
+    ```typescript
+    function getProperty<T>(obj: T, key: keyof T) {
+        return obj[key];
+    }
+    const x = { a: 1, b: 2 };
+    getProperty(x, "a"); // OK
+    // getProperty(x, "c"); // Error: "c" is not "a" | "b"
+    ```
 
 ## Expert Characteristics
 
@@ -135,6 +172,45 @@
 6. **Performance Optimizations with `tsc` and Babel**
 7. **Type-Driven Development (TDD with TypeScript in Enterprise)**
 8. **Applying TypeScript in Full-Stack Development (Angular, NestJS, Deno)**
+9. **Type Variance**: How subtypes and supertypes relate when passed as arguments.
+   - **Covariance** — a subtype is accepted where a supertype is expected:
+     ```typescript
+     class Vehicle { start() {} }
+     class Car extends Vehicle { honk() {} }
+     function run(v: Vehicle) { v.start(); }
+     run(new Car()); // OK, Car is-a Vehicle
+     ```
+   - **Contravariance** — a supertype is used where a subtype's members must not be assumed:
+     ```typescript
+     function processVehicle(v: Vehicle) {
+         v.start();
+         // v.honk(); // Error: honk doesn't exist on Vehicle
+     }
+     ```
+10. **Runtime Reflection**: TypeScript's checks are compile-time, but `typeof` and `instanceof` inspect types at runtime.
+    ```typescript
+    console.log(typeof 23);          // "number"
+    console.log(new Vehicle() instanceof Vehicle); // true
+    ```
+11. **Dependency Injection**: Decouple a class from the concrete services it depends on by injecting interfaces through the constructor instead of instantiating them directly, making code easier to test and maintain.
+    ```typescript
+    interface IMentalWellnessService {
+        getMentalWellnessAdvice(): string;
+    }
+    class MentalWellness implements IMentalWellnessService {
+        getMentalWellnessAdvice(): string {
+            return "Take time to meditate.";
+        }
+    }
+    class HealthAdvice {
+        constructor(private mentalWellnessService: IMentalWellnessService) {}
+        getHealthAdvice(): string {
+            return this.mentalWellnessService.getMentalWellnessAdvice();
+        }
+    }
+    // Injecting the dependency instead of `new`-ing it inside HealthAdvice
+    const healthAdvice = new HealthAdvice(new MentalWellness());
+    ```
 
 ## Conclusion
 TypeScript provides a strong foundation for scalable JavaScript applications. By mastering the expert-level features, developers can enhance maintainability, performance, and architecture for enterprise-level software solutions.
