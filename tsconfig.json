@@ -1,0 +1,29 @@
+{
+  // TypeSpaghetti · edición 2026 · comprobado con TypeScript 7.0
+  "compilerOptions": {
+    // Entorno: Node 22.18+ (ESM)
+    "target": "es2024",
+    "lib": ["es2024", "esnext.disposable"],
+    "module": "nodenext",
+    "types": ["node"],
+
+    // Salida: los ejemplos se compilan a dist/ y se ejecutan desde ahí
+    "rootDir": ".",
+    "outDir": "dist",
+    "sourceMap": true,
+
+    // Estricto, y un poco más
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Módulos honestos: lo que lleva `type` se borra, lo demás se emite tal cual
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
+  },
+  "include": ["ejemplos", "herramientas"]
+}
