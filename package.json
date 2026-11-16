@@ -1,0 +1,20 @@
+{
+  "name": "typespaghetti",
+  "version": "2.0.0",
+  "description": "Desenreda el sistema de tipos de TypeScript nivel a nivel: ejemplos ejecutables y verificados con TypeScript 7.",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "comprobar": "tsc -p .",
+    "ejemplos": "tsc -p . && node herramientas/verificar.ts",
+    "portada": "node herramientas/generar-portada.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "~7.0.2"
+  }
+}
